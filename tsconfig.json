@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "strict": true,
+    "skipLibCheck": true,
+    "baseUrl": "./src",
+    "paths": {
+      "~*": ["./*"]
+    },
+    "typeRoots": ["node_modules/@types"]
+  },
+  "include": ["src/**/*"]
+}
