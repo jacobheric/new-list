@@ -1,0 +1,7 @@
+{
+  "extends": "../tsconfig.json",
+  "target": "esnext",
+  "exclude": [
+    "src/client"
+  ]
+}

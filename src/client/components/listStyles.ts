@@ -28,6 +28,8 @@ export const NoteAction = styled.div`
    padding-left: 10px;          
 `;
 
+
 export const Note = styled.span`
+   cursor: pointer;
    text-decoration: ${(props: { done: boolean }) => props.done ? "line-through" : "none"}
 `;
