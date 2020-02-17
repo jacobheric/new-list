@@ -1,20 +1,12 @@
 import * as React from "react";
-import { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
+import { useState } from "react";
 import * as r from "ramda";
-import { Container, Note, NoteAction, NoteInput, NoteList } from "./listStyles";
-import { useQuery } from '@apollo/react-hooks';
+import { Container, NoteAction, NoteList, NoteSpan } from "./styles";
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
-import { v4 as uuid } from 'uuid';
+import InputComponent, { ADD_NOTE, cacheUpdate, Note } from "./input";
 
-
-interface Note {
-   uuid: string;
-   note: string;
-   done: boolean;
-   archived: boolean;
-}
-
-const GET_NOTES = gql`
+export const GET_NOTES = gql`
    query getNotes {
       notes {
          uuid
@@ -22,46 +14,21 @@ const GET_NOTES = gql`
          done
          archived 
       } 
-   }
+   }   
 `;
-const newNote = () => ({ uuid: uuid(), note: "", done: false, archived: false });
 
 const ListComponent = () => {
    const { loading, error, data } = useQuery(GET_NOTES);
-   const [list, setList] = useState<Note[]>([]);
-   const [input, setInput] = useState<Note>(newNote());
-
-   useEffect(() => {
-      if (data ) {
-         setList(data.notes)
-      }
-   }, [data])
-
-   const add = ( event: KeyboardEvent ) => {
-      if ( event.key !== "Enter" ) {
-         return
-      }
-      //
-      // Dedupe non-archived by taking a union based on note value
-      // TODO: de-dupe will need to get smarter for rich content (hash?)
-      setList(r.unionWith(r.eqProps('note'),
-         r.filter(note => !note.archived, list), [input]));
-      //
-      // clear input
-      setInput(newNote());
-   };
+   const [addNote] = useMutation(ADD_NOTE, cacheUpdate);
+   const [input, setInput] = useState();
 
    const edit = (note: Note) => {
-      setList(r.reject(r.propEq('id', note.uuid), list));
-      setInput(note);
-   }
+      setInput(r.omit(['__typename'], note));
+   };
 
    //
    // update a note
-   const update = (note: Note) =>
-      setList(
-         r.map((item: Note) => note.uuid === item.uuid ? note : item, list)
-      );
+   const update = (note: Note) => addNote({ variables: { note: r.omit(['__typename'], note) } });
 
    if (loading) {
       return <Container>Loading...</Container>;
@@ -72,17 +39,11 @@ const ListComponent = () => {
    }
 
    return <Container>
-      <NoteInput
-         placeholder={"type something and press enter"}
-         value={input.note}
-         onChange={(event: ChangeEvent<HTMLInputElement>) =>
-            setInput({ ...input, ...{ note: event.target.value }})}
-         onKeyPress={add}
-      />
+      <InputComponent note={ input ? input : undefined }/>
       <NoteList>
-         {list.map((item: Note, i: number) =>
+         {data.notes.map((item: Note, i: number) =>
             item.archived ? null : <li key={i}>
-               <Note done={item.done} onClick={() => edit(item)}> {item.note} </Note>
+               <NoteSpan done={item.done} onClick={() => edit(item)}> {item.note} </NoteSpan>
                <NoteAction onClick={() => update({ ...item, ...{ archived: true } })}>ⓧ</NoteAction>
                <NoteAction onClick={() => update({ ...item, ...{ done: !item.done } })}>✓</NoteAction>
             </li>

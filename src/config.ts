@@ -10,6 +10,7 @@ export const db = new Sequelize("sqlite::memory:");
 
 db.define('notes', {
    uuid: {
+      primaryKey: true,
       unique: true,
       allowNull: false,
       type: UUID,
