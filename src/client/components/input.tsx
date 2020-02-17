@@ -25,8 +25,10 @@ export const ADD_NOTE = gql`
    }   
 `;
 
+//
+// TODO: type this properly
 export const cacheUpdate = {
-   update(cache, { data: { addNote } }) {
+   update(cache: any, { data: { addNote } }: any) {
       const { notes } = cache.readQuery({ query: GET_NOTES });
       const index = r.findIndex(r.propEq("uuid", addNote.uuid), notes);
       //

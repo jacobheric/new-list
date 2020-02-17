@@ -4,10 +4,14 @@
     "jsx": "react",
     "baseUrl": "./",
     "paths": {
-      "~*": ["./*"]
+      "~*": [
+        "./*"
+      ]
     },
-    "exclude": [
-      "src/server"
-    ]
-  }
+    "allowSyntheticDefaultImports": true
+  },
+  "exclude": [
+    "node_modules",
+    "src/server"
+  ]
 }

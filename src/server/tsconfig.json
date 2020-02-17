@@ -2,6 +2,7 @@
   "extends": "../tsconfig.json",
   "target": "esnext",
   "exclude": [
+    "node_modules",
     "src/client"
   ]
 }
