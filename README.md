@@ -20,6 +20,11 @@ hot module replacement in dev mode.
 * yarn start
 * yarn test
 
+roadmap/coming soon:
+* support for other db providers
+* production build support (including docker) 
+* socket-based push updates
+
 
 
 
