@@ -3,6 +3,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
 import { onError } from 'apollo-link-error';
 import { ApolloLink } from 'apollo-link';
+import { PORT } from "../config";
 
 export const client = new ApolloClient({
    link: ApolloLink.from([
@@ -16,7 +17,7 @@ export const client = new ApolloClient({
          if (networkError) console.log(`[Network error]: ${networkError}`);
       }),
       new HttpLink({
-         uri: `http://localhost:${3000}/graphql`,
+         uri: `http://localhost:${PORT}/graphql`,
          credentials: 'same-origin'
       })
    ]),

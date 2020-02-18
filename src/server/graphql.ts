@@ -1,5 +1,5 @@
 import { gql } from "apollo-server-express";
-import { Notes } from "../config";
+import { Notes } from "./db";
 
 export const typeDefs = gql`
 type Note {
@@ -29,10 +29,11 @@ export const resolvers = {
       notes: async (): Promise<any> => await Notes.findAll()
    },
    Mutation: {
-      //
-      // returned upserts are not supported with
-      // sqlite so just echo back the input
       addNote: async (root: any, args: any) =>
-         Notes.upsert(args.note).then(() => args.note)
+         Notes.findOrCreate({where: {uuid: args.note.uuid}, defaults: args.note})
+            .then(([note, created]: [any, boolean] ) =>
+               created ? note.get({ plain: true }) : note.update(args.note)
+            )
+
    }
 };

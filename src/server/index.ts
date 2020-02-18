@@ -1,8 +1,9 @@
 import * as express from "express";
 import { ApolloServer } from "apollo-server-express";
-import { db, migrate, PORT } from "../config";
+import { db, migrate } from "./db";
 import { typeDefs, resolvers } from "./graphql";
 import * as ParcelBundler from "parcel-bundler";
+import { PORT } from "../config";
 
 const server = new ApolloServer({ typeDefs, resolvers });
 
