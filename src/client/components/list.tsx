@@ -3,8 +3,8 @@ import { useState } from "react";
 import * as r from "ramda";
 import { Container, NoteAction, NoteList, NoteSpan } from "./styles";
 import { useMutation, useQuery } from '@apollo/react-hooks';
-import { gql } from 'apollo-boost';
 import InputComponent, { ADD_NOTE, cacheUpdate, Note } from "./input";
+import gql from "graphql-tag";
 
 export const GET_NOTES = gql`
    query getNotes {
