@@ -1,8 +1,7 @@
 {
   "extends": "../tsconfig.json",
-  "target": "esnext",
+  "target": "node",
   "exclude": [
-    "node_modules",
     "src/client"
   ]
 }
