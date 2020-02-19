@@ -8,3 +8,18 @@ services:
       POSTGRES_DB: ${DB_NAME}
     ports:
       - 5432:5432
+  app:
+    build: .
+    environment:
+      - PORT
+      - DB_NAME
+      - DB_USER
+      - DB_PASSWORD
+      - DB_HOST
+      - DB_DIALECT
+      - DB_STORAGE
+    ports:
+      - "${PORT}:${PORT}"
+      - "9229:9229"
+      - "9230:9230"
+    tty: true

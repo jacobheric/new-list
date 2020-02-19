@@ -1,4 +1,4 @@
-import * as dotenv from "dotenv";
+import dotenv from "dotenv";
 import { DataTypes, Dialect, Sequelize, UUID } from "sequelize";
 import { v4 as uuid } from 'uuid';
 
@@ -19,7 +19,8 @@ export const dbConfig =  {
    host: (process.env.DB_HOST || "localhost") as string,
    port: Number(process.env.DB_PORT || "5432"),
    dialect: dialect as 'postgres' | 'sqlite',
-   storage: process.env.DB_STORAGE as string
+   storage: process.env.DB_STORAGE as string,
+   logging: false
 };
 
 export const db = new Sequelize(dbConfig);

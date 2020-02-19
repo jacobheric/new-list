@@ -1,7 +1,7 @@
 A Parcel, Node, Typescript, Apollo/Graphql, React, Styled Components, Sequelize List/Note App
 -----------
 
- A work in progress note/todo app to explore some 
+A work in progress note/todo app to explore some 
 interesting tech, including:
 
 * [Parcel](https://parceljs.org/)
@@ -47,8 +47,14 @@ DB_DIALECT=postgres
 DB_STORAGE=
 ```
 
-If you want to spin up a dockerized postgres instance using the above db env vars, you can do
-`docker-compose up db` (requires docker, obviously)
+### Docker (these require docker, obviously)
+* `docker-compose up db` will bring up a postgres db in a container. 
+Make sure you've set the DB_* env vars outlined above to postgres values.
+* `docker-componse up app` will bring the app up in a container.
+* `docker-compose` will bring the postgres db and the app up in docker.    
+
+
+### More env vars
 
 You can also change the port the app runs on via .env or env var like so:
 
@@ -59,8 +65,11 @@ PORT=3000
 ### roadmap/coming soon:
 * ~~support for other db providers~~
 * ~~production build support~~
-* run in docker 
+* ~~run in docker~~ 
 * socket-based push updates
+* authentication
+* note search
+* markdown support
 
 
 
