@@ -51,7 +51,7 @@ DB_STORAGE=
 * `docker-compose up db` will bring up a postgres db in a container. 
 Make sure you've set the DB_* env vars outlined above to postgres values.
 * `docker-componse up app` will bring the app up in a container.
-* `docker-compose` will bring the postgres db and the app up in docker.    
+* `docker-compose up` will bring the postgres db and the app up in docker.    
 
 
 ### More env vars
