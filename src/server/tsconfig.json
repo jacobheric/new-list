@@ -1,7 +1,0 @@
-{
-  "extends": "../tsconfig.json",
-  "target": "node",
-  "exclude": [
-    "src/client"
-  ]
-}

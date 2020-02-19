@@ -1,9 +1,10 @@
-import * as express from "express";
+import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import { db, migrate } from "./db";
 import { typeDefs, resolvers } from "./graphql";
-import * as ParcelBundler from "parcel-bundler";
+import ParcelBundler from "parcel-bundler";
 import { PORT } from "../config";
+import * as path from "path";
 
 const server = new ApolloServer({ typeDefs, resolvers });
 
@@ -11,10 +12,15 @@ const app = express();
 server.applyMiddleware({ app });
 
 //
-// TODO: currently dev mode only, add production run from static bundle
-// app.use(express.static('dist'));
-const bundler = new ParcelBundler('src/client/index.html');
-app.use(bundler.middleware());
+// use parcel bundler in dev for hot module reloading
+if (process.env.NODE_ENV === "dev") {
+   const bundler = new ParcelBundler('src/client/index.html');
+   console.log('running in dev mode with hot module replacement');
+   app.use(bundler.middleware());
+}
+else {
+   app.use(express.static(path.join(__dirname, '/client')));
+}
 
 db.sync().then(async () => {
    //

@@ -12,22 +12,23 @@ interesting tech, including:
 
 
 ### pre-requisites
-```
-* node 
-* yarn or npm
-```
+* `node` 
+* `yarn` or `npm install`
 
- 
-### running
-```
-* yarn
-* yarn start
-* yarn test
-```
+
+### running in dev mode
+* `yarn` or `npm install`
+* `yarn start` or `npm start` 
+* `yarn test` or `npm test`
+
 
 By default the app runs against an in memory sqlite db. It runs on port 3000 and supports 
 hot module replacement in dev mode.
 
+
+### build and run in production mode
+* `yarn build` or `npm build`
+* `node dist/index.js`
 
 ### optional params
 
@@ -57,7 +58,8 @@ PORT=3000
 
 ### roadmap/coming soon:
 * ~~support for other db providers~~
-* production build support (including docker) 
+* ~~production build support~~
+* run in docker 
 * socket-based push updates
 
 
