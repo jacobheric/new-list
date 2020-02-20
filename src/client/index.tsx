@@ -4,13 +4,13 @@ import lightTheme from "./theme";
 import GlobalStyle from "./theme";
 import { ThemeProvider } from "styled-components";
 import ListComponent from "./components/list";
-import { ApolloProvider } from '@apollo/react-hooks';
-import { client } from "./graphqlClient";
+import { gqlClient } from "./graphqlClient";
+import { ApolloProvider } from "@apollo/client";
 
 ReactDOM.render(
    <ThemeProvider theme={lightTheme}>
       <GlobalStyle/>
-      <ApolloProvider client={client}>
+      <ApolloProvider client={gqlClient}>
          <ListComponent/>
       </ApolloProvider>
    </ThemeProvider>,

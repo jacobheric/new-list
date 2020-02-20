@@ -1,11 +1,11 @@
 import { v4 as uuid } from "uuid";
-import { useMutation, useQuery } from "@apollo/react-hooks";
 import * as React from "react";
 import { ChangeEvent, FunctionComponent, KeyboardEvent, useEffect, useState } from "react";
 import * as r from "ramda";
 import { NoteInput } from "./styles";
 import { GET_NOTES } from "./list";
 import gql from "graphql-tag";
+import { useMutation, useQuery } from "@apollo/client";
 
 export interface Note {
    uuid: string;
@@ -22,7 +22,7 @@ export const ADD_NOTE = gql`
          done
          archived
       }
-   }   
+   } 
 `;
 
 //
