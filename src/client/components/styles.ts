@@ -7,18 +7,19 @@ export const Container = styled.div`
 `;
 
 export const NoteInput = styled.input`
-   padding: 5px;
+   padding: 0 10px 0 10px;
    width: 98%;
-   height: 20px;
-   font-size: 16px;   
+   height: 2em;
+   font-size: 1.25em;   
 `;
 
 export const NoteList = styled.ul`
    list-style-type: none;      
-   padding: 0px;   
+   padding: 0 0 0 5px;   
    li {
       border-bottom: 1px solid #eeeeee;   
-      padding: 6px; 
+      padding: 6px;
+      margin-bottom: 6px; 
   }   
 `;
 
