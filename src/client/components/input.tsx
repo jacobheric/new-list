@@ -2,7 +2,7 @@ import { v4 as uuid } from "uuid";
 import * as React from "react";
 import { ChangeEvent, FunctionComponent, KeyboardEvent, useEffect, useState } from "react";
 import * as r from "ramda";
-import { NoteInput } from "./styles";
+import { ActionButton, Input, Row } from "./styles";
 import { GET_NOTES } from "./list";
 import gql from "graphql-tag";
 import { useMutation, useQuery } from "@apollo/client";
@@ -66,12 +66,11 @@ const InputComponent: FunctionComponent<{ note?: Note}> = ({ note }) => {
    const add = () => {
       //
       // Dedupe non-archived by note value
-      // TODO: this will need to get smarter for rich content (hash?)
       const dupe = r.find(
          r.allPass([r.propEq('archived', false), r.propEq('note', input.note)]),
          data.notes);
 
-      if (!dupe) {
+      if (input.note && !dupe) {
          addNote({ variables: { note: input } });
       }
       //
@@ -79,13 +78,16 @@ const InputComponent: FunctionComponent<{ note?: Note}> = ({ note }) => {
       setInput(newNote());
    };
 
-   return <NoteInput
-      placeholder={"type something and press enter"}
-      value={input.note}
-      onChange={(event: ChangeEvent<HTMLInputElement>) =>
-         setInput({ ...input, ...{ note: event.target.value } })}
-      onKeyPress={keyPress}
-   />
+   return <Row>
+      <Input placeholder={"add"}
+         value={input.note}
+         onChange={(event: ChangeEvent<HTMLInputElement>) =>
+          setInput({ ...input, ...{ note: event.target.value } })}
+         onKeyPress={keyPress}
+         width={100}
+      />
+         <ActionButton onClick={() => add()}>Add</ActionButton>
+   </Row>
 };
 
 export default InputComponent;

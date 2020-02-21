@@ -22,12 +22,7 @@ type Query {
 
 type Mutation {
   addNote(note: NoteI!): Note
-}
-
-type Subscription {
-  noteAdded: Note
-}
-`;
+}`;
 
 export const resolvers = {
    Query: {

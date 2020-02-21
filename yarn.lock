@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@apollo/client@^3.0.0-beta.36":
+"@apollo/client@^3.0.0-beta.23", "@apollo/client@^3.0.0-beta.36":
   version "3.0.0-beta.36"
   resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.0.0-beta.36.tgz#e62f2cc8075363c9a9058bd6916b4c081c01ec86"
   integrity sha512-CvX/KzL/DXfZu9dydwpQwoRHIaAMkZcUDJfbjXuWLk0mtv49eXQO20FDaiRGeQozAyByYU3C9MmGQLgfLTmzmw==
@@ -16,6 +16,14 @@
     ts-invariant "^0.4.4"
     tslib "^1.10.0"
     zen-observable "^0.8.14"
+
+"@apollo/link-ws@^2.0.0-beta.3":
+  version "2.0.0-beta.3"
+  resolved "https://registry.yarnpkg.com/@apollo/link-ws/-/link-ws-2.0.0-beta.3.tgz#b0283c68516aa0caa82c4904f84eff639643b04b"
+  integrity sha512-CyQT8WOJXiA9/wOVDRdFWCRdiq38yM5dtuuQB6dkyK9yyFb8M213GHjrJoOwXxcbYsPboj14V5VMX+FT+Ghy7g==
+  dependencies:
+    "@apollo/client" "^3.0.0-beta.23"
+    tslib "^1.9.3"
 
 "@apollo/protobufjs@^1.0.3":
   version "1.0.3"
