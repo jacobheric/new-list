@@ -3,10 +3,11 @@
   "version": "0.0.1",
   "license": "MIT",
   "scripts": {
-    "start": "NODE_ENV=dev concurrently \"tsc --pretty --noEmit --watch\" \"tsnd --transpile-only --exit-child ./src/server/index.ts\"",
-    "build:server": "parcel build ./src/server/index.ts --target node",
     "build:client": "parcel build ./src/client/index.html --target browser --out-dir=./dist/client",
+    "build:server": "parcel build ./src/server/index.ts --target node",
     "build": "concurrently \"npm run build:server\" \"npm run build:client\"",
+    "lint": "eslint \"*/**/*.{ts,tsx}\" --fix",
+    "start": "NODE_ENV=dev concurrently \"tsc --pretty --noEmit --watch\" \"tsnd --transpile-only --exit-child ./src/server/index.ts\"",
     "test": "jest"
   },
   "dependencies": {
@@ -44,10 +45,17 @@
     "@types/react-dom": "^16.9.5",
     "@types/styled-components": "^4.4.3",
     "@types/uuid": "^3.4.7",
+    "@typescript-eslint/eslint-plugin": "^2.20.0",
+    "@typescript-eslint/parser": "^2.20.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "enzyme-to-json": "^3.4.4",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-react": "^7.18.3",
     "jest": "^25.1.0",
+    "prettier": "^1.19.1",
     "ts-jest": "^25.2.0",
     "ts-node": "^8.6.2",
     "ts-node-dev": "^1.0.0-pre.44"

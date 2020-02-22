@@ -23,15 +23,15 @@ export const darkTheme = `{
 
 const GlobalStyle = createGlobalStyle`
    @media (prefers-color-scheme: light) {
-      ${ lightTheme }     
+      ${lightTheme}     
    }
    
    @media (prefers-color-scheme: no-preference) {
-      ${ lightTheme }     
+      ${lightTheme}     
    }
    
    @media (prefers-color-scheme: dark) {
-      ${ darkTheme }          
+      ${darkTheme}          
    }
    
    input, button {

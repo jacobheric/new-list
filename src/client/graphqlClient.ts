@@ -1,34 +1,42 @@
-import { HOST, PORT } from "../config";
-import { split, HttpLink, ApolloClient, InMemoryCache, ApolloLink } from '@apollo/client';
-import { getMainDefinition } from '@apollo/client/utilities';
-import { WebSocketLink } from '@apollo/link-ws';
-
-
-const wsLink = new WebSocketLink({
-   uri: `ws://${HOST}:${PORT}/graphql`,
-   options: {
-      reconnect: true
-   }
-});
+import { feature, HOST, PORT } from "../config";
+import { split, HttpLink, ApolloClient, InMemoryCache } from "@apollo/client";
+import { getMainDefinition } from "@apollo/client/utilities";
+import { WebSocketLink } from "@apollo/link-ws";
 
 const httpLink = new HttpLink({
-   uri: `http://${HOST}:${PORT}/graphql`
+  uri: `http://${HOST}:${PORT}/graphql`
 });
 
-const link = split(
-   ({ query }) => {
+const splitClient = () => {
+  const wsLink = new WebSocketLink({
+    uri: `ws://${HOST}:${PORT}/graphql`,
+    options: {
+      reconnect: true
+    }
+  });
+
+  const splitLink = split(
+    ({ query }) => {
       const definition = getMainDefinition(query);
       return (
-         definition.kind === 'OperationDefinition' &&
-         definition.operation === 'subscription'
+        definition.kind === "OperationDefinition" &&
+        definition.operation === "subscription"
       );
-   },
-   wsLink as any,
-   httpLink,
-);
+    },
+    wsLink as any,
+    httpLink
+  );
 
-export const gqlClient = new ApolloClient({
-   cache: new InMemoryCache(),
-   link
-});
+  return new ApolloClient({
+    cache: new InMemoryCache(),
+    link: splitLink
+  });
+};
 
+const client = () =>
+  new ApolloClient({
+    cache: new InMemoryCache(),
+    link: httpLink
+  });
+
+export const gqlClient = feature.realTime ? splitClient() : client();
