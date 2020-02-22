@@ -23,15 +23,16 @@ interesting tech, including:
 
 
 By default the app runs against an in memory sqlite db. It runs on port 3000 and supports 
-hot module replacement in dev mode.
+hot module replacement in dev mode. If you want to use PostgreSQL instead, you need to 
+supply additional env vars (see below).
 
 
 ### build and run in production mode
 * `yarn build` or `npm build`
 * `node dist/index.js`
 
-### optional params
 
+### optional params
 It's possible to run against an external postgresql or sqlite db by providing the 
 following vars in an .env file or in env vars:
 
@@ -47,20 +48,31 @@ DB_DIALECT=postgres
 DB_STORAGE=
 ```
 
-### Docker (these require docker, obviously)
+### docker (these require docker, obviously)
+If you want to run against PostgreSQL, there is a dockerized version of it. Make sure you've set 
+the DB_* env vars outlined above to postgres value, then:
 * `docker-compose up db` will bring up a postgres db in a container. 
-Make sure you've set the DB_* env vars outlined above to postgres values.
+
+To build and bring up just the node app in docker, run:
 * `docker-componse up app` will bring the app up in a container.
+
+To bring up both:
 * `docker-compose up` will bring the postgres db and the app up in docker.    
 
 
-### More env vars
+### more env vars
 
-You can also change the port the app runs on via .env or env var like so:
+You can also change the port and the host the app runs on via .env or env vars. This is 
+necessary if you want the client to connect to a non-local server/api.
 
 ```
 PORT=3000
+HOST=0.0.0.0
 ```
+
+### dark mode!
+The app supports an optional dark mode 
+via [CSS prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme)
 
 ### roadmap/coming soon:
 * ~~support for other db providers~~

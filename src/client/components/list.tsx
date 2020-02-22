@@ -2,8 +2,9 @@ import * as React from "react";
 import { ChangeEvent, SyntheticEvent, useState } from "react";
 import * as r from "ramda";
 import { Container, HR, Input, NoteAction, NoteLI, NoteList, NoteText, Row } from "./styles";
-import InputComponent, { ADD_NOTE, cacheUpdate, Note } from "./input";
-import { gql, useMutation, useQuery } from "@apollo/client";
+import InputComponent, { ADD_NOTE, cacheUpdate, mergeNote, Note } from "./input";
+import { gql, useMutation, useQuery, useSubscription } from "@apollo/client";
+import { gqlClient } from "../graphqlClient";
 
 export const GET_NOTES = gql`
    query getNotes {
@@ -16,11 +17,25 @@ export const GET_NOTES = gql`
    }   
 `;
 
+const NOTE_SUB = gql`
+  subscription onNoteChange {
+    noteChanged {
+      uuid
+      note
+      done
+      archived
+    }
+  }
+`;
+
 const ListComponent = () => {
    const { loading, error, data } = useQuery(GET_NOTES);
    const [addNote] = useMutation(ADD_NOTE, cacheUpdate);
+   const sub = useSubscription(NOTE_SUB);
    const [input, setInput] = useState();
    const [search, setSearch] = useState('');
+
+   console.log('sub', sub);
 
    const edit = (note: Note) => {
       setInput(r.omit(['__typename'], note));
@@ -34,6 +49,11 @@ const ListComponent = () => {
    const update = (e: SyntheticEvent, note: Note) => {
       e.stopPropagation();
       addNote({ variables: { note: r.omit(['__typename'], note) } });
+   }
+
+
+   if (sub.data) {
+      mergeNote(gqlClient, sub.data.noteChanged)
    }
 
    if (loading) {

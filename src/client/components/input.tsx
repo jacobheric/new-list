@@ -5,7 +5,7 @@ import * as r from "ramda";
 import { ActionButton, Input, Row } from "./styles";
 import { GET_NOTES } from "./list";
 import gql from "graphql-tag";
-import { useMutation, useQuery } from "@apollo/client";
+import { ApolloClient, useMutation, useQuery } from "@apollo/client";
 
 export interface Note {
    uuid: string;
@@ -25,18 +25,23 @@ export const ADD_NOTE = gql`
    } 
 `;
 
+
+export const mergeNote = (store: ApolloClient<any> , note: Note) => {
+   const { notes } = store.readQuery<{ notes: Note[]}>({ query: GET_NOTES })!;
+   const index = r.findIndex(r.propEq("uuid", note.uuid), notes);
+   //
+   // replace or add
+   store.writeQuery({
+      query: GET_NOTES,
+      data: { notes: index > -1 ? r.update(index, note, notes): notes.concat(note) },
+   });
+};
+
 //
 // TODO: type this properly
 export const cacheUpdate = {
    update(cache: any, { data: { addNote } }: any) {
-      const { notes } = cache.readQuery({ query: GET_NOTES });
-      const index = r.findIndex(r.propEq("uuid", addNote.uuid), notes);
-      //
-      // replace or add
-      cache.writeQuery({
-         query: GET_NOTES,
-         data: { notes: index > -1 ? r.update(index, addNote, notes): notes.concat(addNote) },
-      });
+      mergeNote(cache, addNote);
    }
 };
 

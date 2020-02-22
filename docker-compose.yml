@@ -20,7 +20,7 @@ services:
       - DB_DIALECT
       - DB_STORAGE
     ports:
-      - "${PORT}:${PORT}"
+      - "${PORT:-3000}:${PORT:-3000}"
       - "9229:9229"
       - "9230:9230"
     tty: true

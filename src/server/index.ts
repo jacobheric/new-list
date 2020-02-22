@@ -1,10 +1,11 @@
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import { db, migrate } from "./db";
-import { typeDefs, resolvers } from "./graphql";
+import { resolvers, typeDefs } from "./graphql";
 import ParcelBundler from "parcel-bundler";
 import { HOST, PORT } from "../config";
 import * as path from "path";
+import * as http from "http";
 
 const server = new ApolloServer({ typeDefs, resolvers });
 
@@ -12,6 +13,9 @@ const app = express();
 server.applyMiddleware({
    app
 });
+
+const httpServer = http.createServer(app);
+server.installSubscriptionHandlers(httpServer);
 
 //
 // use parcel bundler in dev for hot module reloading
@@ -28,9 +32,9 @@ db.sync().then(async () => {
    //
    // quick and dirty db migration
    migrate();
-   app.listen(PORT, '0.0.0.0', () => {
+   httpServer.listen(PORT, () => {
       console.log(`⚛ Server running at http://${ HOST }:${ PORT }` );
-      console.log(`⚛ Graphql running at http://${ HOST }:${ PORT }${server.graphqlPath}`);
+      console.log(`⚛ GraphQL running at http://${ HOST }:${ PORT }${server.graphqlPath}`);
    });
 });
 

@@ -1,5 +1,6 @@
-import { gql } from "apollo-server-express";
+import { gql, PubSub } from "apollo-server-express";
 import { Notes } from "./db";
+import { echo } from "../client/util";
 
 export const typeDefs = gql`
 type Note {
@@ -22,7 +23,14 @@ type Query {
 
 type Mutation {
   addNote(note: NoteI!): Note
+}
+
+type Subscription {
+   noteChanged: Note  
 }`;
+
+const pubSub = new PubSub();
+const NOTE_CHANGED = 'NOTE_CHANGED';
 
 export const resolvers = {
    Query: {
@@ -30,10 +38,15 @@ export const resolvers = {
    },
    Mutation: {
       addNote: async (root: any, args: any) =>
-         Notes.findOrCreate({where: {uuid: args.note.uuid}, defaults: args.note})
-            .then(([note, created]: [any, boolean] ) =>
-               created ? note.get({ plain: true }) : note.update(args.note)
-            )
-
+         Notes.findOrCreate({ where: { uuid: args.note.uuid }, defaults: args.note })
+            .then(([note, created]: [any, boolean]) => {
+               pubSub.publish(NOTE_CHANGED, { noteChanged: args.note });
+               return created ? note.get({ plain: true }) : note.update(args.note);
+            })
+   },
+   Subscription: {
+      noteChanged: {
+         subscribe: () => pubSub.asyncIterator([ NOTE_CHANGED ]),
+      }
    }
 };
