@@ -1,12 +1,6 @@
 import { v4 as uuid } from "uuid";
 import * as React from "react";
-import {
-  ChangeEvent,
-  FunctionComponent,
-  KeyboardEvent,
-  useEffect,
-  useState
-} from "react";
+import { ChangeEvent, FunctionComponent, KeyboardEvent, useEffect, useState } from "react";
 import * as r from "ramda";
 import { ActionButton, Input, Row } from "./styles";
 import { GET_NOTES } from "./list";

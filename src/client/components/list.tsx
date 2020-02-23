@@ -1,22 +1,8 @@
 import * as React from "react";
 import { ChangeEvent, SyntheticEvent, useState } from "react";
 import * as r from "ramda";
-import {
-  Container,
-  HR,
-  Input,
-  NoteAction,
-  NoteLI,
-  NoteList,
-  NoteText,
-  Row
-} from "./styles";
-import InputComponent, {
-  ADD_NOTE,
-  cacheUpdate,
-  mergeNote,
-  Note
-} from "./input";
+import { Container, HR, Input, NoteAction, NoteLI, NoteList, NoteText, Row } from "./styles";
+import InputComponent, { ADD_NOTE, cacheUpdate, mergeNote, Note } from "./input";
 import { gql, useMutation, useQuery, useSubscription } from "@apollo/client";
 import { gqlClient } from "../graphqlClient";
 import { feature } from "../../config";
@@ -60,11 +46,13 @@ const ListComponent = () => {
     setInput(r.omit(["__typename"], note));
   };
 
+  //
+  // prettier-ignore
   const filter = () =>
     r.filter(
-      (item: Note) => r.includes(search.toLowerCase(), item.note.toLowerCase()),
-      data.notes
-    );
+       (item: Note) =>
+          r.includes(search.toLowerCase(), item.note.toLowerCase()),
+       data.notes);
 
   //
   // update a note
@@ -87,9 +75,7 @@ const ListComponent = () => {
         <Input
           placeholder={"search"}
           value={search}
-          onChange={(event: ChangeEvent<HTMLInputElement>) =>
-            setSearch(event.target.value)
-          }
+          onChange={(event: ChangeEvent<HTMLInputElement>) => setSearch(event.target.value)}
           width={100}
         />
       </Row>
@@ -100,14 +86,10 @@ const ListComponent = () => {
           item.archived ? null : (
             <NoteLI key={i} onClick={() => edit(item)}>
               <NoteText done={item.done}> {item.note} </NoteText>
-              <NoteAction
-                onClick={e => update(e, { ...item, ...{ archived: true } })}
-              >
+              <NoteAction onClick={e => update(e, { ...item, ...{ archived: true } })}>
                 ⓧ
               </NoteAction>
-              <NoteAction
-                onClick={e => update(e, { ...item, ...{ done: !item.done } })}
-              >
+              <NoteAction onClick={e => update(e, { ...item, ...{ done: !item.done } })}>
                 ✓
               </NoteAction>
             </NoteLI>

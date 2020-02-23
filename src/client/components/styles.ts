@@ -39,8 +39,7 @@ export const NoteText = styled.span`
   display: inline-block;
   width: 100%;
   cursor: pointer;
-  text-decoration: ${(props: { done: boolean }) =>
-    props.done ? "line-through" : "none"};
+  text-decoration: ${(props: { done: boolean }) => (props.done ? "line-through" : "none")};
 `;
 
 export const HR = styled.hr`
