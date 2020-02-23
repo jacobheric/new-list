@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const Container = styled.div`
   max-width: 1024px;
   margin: 50px auto;
-  padding: 0 25px;
+  padding: 0 10px;
 `;
 
 export const Row = styled.div`
@@ -30,7 +30,8 @@ export const NoteLI = styled.li`
 `;
 
 export const NoteAction = styled.div`
-  padding: 0 0.5em;
+  font-size: 1.2em;
+  padding: 0 0 0 1em;
   cursor: pointer;
 `;
 
