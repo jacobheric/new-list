@@ -78,10 +78,12 @@ via [CSS prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/
 * ~~support for other db providers~~
 * ~~production build support~~
 * ~~run in docker~~ 
-* socket-based push updates
+* ~~socket-based push updates~~
+* ~~note search~~
 * authentication
-* note search
 * markdown support
+* js-free support
+
 
 
 
