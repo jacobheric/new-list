@@ -6,6 +6,17 @@ export const Container = styled.div`
   padding: 0 10px;
 `;
 
+export const Errors = styled.div`
+  max-width: 1024px;
+  margin: 5px auto;
+  padding: 10px;
+  border: 2px solid #ffcccc;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 export const Row = styled.div`
   margin: auto;
   display: flex;
@@ -39,7 +50,8 @@ export const NoteText = styled.span`
   display: inline-block;
   width: 100%;
   cursor: pointer;
-  text-decoration: ${(props: { done: boolean }) => (props.done ? "line-through" : "none")};
+  text-decoration: ${(props: { done: boolean }) =>
+    props.done ? "line-through" : "none"};
 `;
 
 export const HR = styled.hr`

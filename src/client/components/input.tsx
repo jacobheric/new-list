@@ -1,11 +1,19 @@
 import { v4 as uuid } from "uuid";
 import * as React from "react";
-import { ChangeEvent, FunctionComponent, KeyboardEvent, useEffect, useState } from "react";
+import {
+  ChangeEvent,
+  FunctionComponent,
+  KeyboardEvent,
+  useContext,
+  useEffect,
+  useState
+} from "react";
 import * as r from "ramda";
 import { ActionButton, Input, Row } from "./styles";
 import { GET_NOTES } from "./list";
 import gql from "graphql-tag";
 import { ApolloClient, useMutation, useQuery } from "@apollo/client";
+import { ErrorActionContext } from "./error";
 
 export interface Note {
   uuid: string;
@@ -55,7 +63,11 @@ const newNote = (note?: Note) =>
 const InputComponent: FunctionComponent<{ note?: Note }> = ({ note }) => {
   const { data } = useQuery(GET_NOTES);
   const [input, setInput] = useState<Note>(newNote(note));
-  const [addNote] = useMutation(ADD_NOTE, cacheUpdate);
+  const { addError } = useContext(ErrorActionContext);
+  const [addNote, { error: mutationError }] = useMutation(
+    ADD_NOTE,
+    cacheUpdate
+  );
 
   //
   // clicking on a note in the parent (list) component populates the input here,
@@ -65,6 +77,12 @@ const InputComponent: FunctionComponent<{ note?: Note }> = ({ note }) => {
       setInput(note);
     }
   }, [note]);
+
+  useEffect(() => {
+    if (mutationError) {
+      addError(mutationError.message);
+    }
+  }, [mutationError]);
 
   const add = () => {
     //
@@ -89,18 +107,20 @@ const InputComponent: FunctionComponent<{ note?: Note }> = ({ note }) => {
   };
 
   return (
-    <Row>
-      <Input
-        placeholder={"add"}
-        value={input.note}
-        onChange={(event: ChangeEvent<HTMLInputElement>) =>
-          setInput({ ...input, ...{ note: event.target.value } })
-        }
-        onKeyPress={keyPress}
-        width={100}
-      />
-      <ActionButton onClick={() => add()}>Add</ActionButton>
-    </Row>
+    <div>
+      <Row>
+        <Input
+          placeholder={"add"}
+          value={input.note}
+          onChange={(event: ChangeEvent<HTMLInputElement>) =>
+            setInput({ ...input, ...{ note: event.target.value } })
+          }
+          onKeyPress={keyPress}
+          width={100}
+        />
+        <ActionButton onClick={() => add()}>Add</ActionButton>
+      </Row>
+    </div>
   );
 };
 

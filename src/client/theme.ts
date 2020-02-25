@@ -7,7 +7,11 @@ export const lightTheme = `{
    }
    button {
       background-color: #eee;
-   }       
+   }
+   .error {
+      background-color: #fafafa;   
+   }
+          
 }`;
 
 export const darkTheme = `{
@@ -19,6 +23,9 @@ export const darkTheme = `{
       background-color: #333333; 
       color: #eeeeee;       
    }
+   .error {
+      background-color: #333333;   
+   }   
 }`;
 
 const GlobalStyle = createGlobalStyle`
