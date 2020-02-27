@@ -2,6 +2,7 @@ import * as React from "react";
 import { ChangeEvent, SyntheticEvent, useContext, useState } from "react";
 import * as r from "ramda";
 import {
+  ActionButton,
   HR,
   Input,
   NoteAction,
@@ -98,6 +99,7 @@ const ListComponent = () => {
           }
           width={100}
         />
+        <ActionButton onClick={() => setSearch(search)}>Search</ActionButton>        
       </Row>
       <HR />
       <InputComponent note={input ? input : undefined} />

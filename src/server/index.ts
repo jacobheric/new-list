@@ -35,9 +35,9 @@ db.sync().then(async () => {
   // quick and dirty db migration
   migrate();
   httpServer.listen(PORT, () => {
-    console.log(`⚛ Server running at http://${HOST}:${PORT}`);
+    console.log(`\n⚛ Server running at http://${HOST}:${PORT}`);
     console.log(
-      `⚛ GraphQL running at http://${HOST}:${PORT}${server.graphqlPath}`
+      `⚛ GraphQL running at http://${HOST}:${PORT}${server.graphqlPath}\n`
     );
   });
 });

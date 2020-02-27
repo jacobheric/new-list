@@ -5,9 +5,9 @@
   "scripts": {
     "build:client": "parcel build ./src/client/index.html --target browser --out-dir=./dist/client",
     "build:server": "parcel build ./src/server/index.ts --target node",
-    "build": "concurrently \"npm run build:server\" \"npm run build:client\"",
+    "build": "concurrently -n server,client \"npm run build:server\" \"npm run build:client\"",
     "lint": "eslint \"*/**/*.{ts,tsx}\" --fix",
-    "start": "NODE_ENV=dev concurrently \"tsc --pretty --noEmit --watch\" \"tsnd --transpile-only --exit-child ./src/server/index.ts\"",
+    "start": "NODE_ENV=dev concurrently -n tsc,tsnd \"tsc --pretty --noEmit --watch\" \"tsnd --transpile-only --respawn ./src/server/index.ts\"",
     "test": "jest"
   },
   "dependencies": {
