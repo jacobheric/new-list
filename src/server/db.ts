@@ -1,63 +1,64 @@
 import dotenv from "dotenv";
-import { DataTypes, Sequelize, UUID } from "sequelize";
+import mongoose, { Schema, Document } from 'mongoose';
 import { v4 as uuid } from "uuid";
 
 dotenv.config();
 
-const dialect = process.env.DB_DIALECT || "sqlite";
+const host = process.env.MONGO_HOST || "localhost";
+const port = process.env.MONGO_PORT || "27017";
+const name = process.env.MONGO_DB || "list";
 
-if (dialect !== "postgres" && dialect !== "sqlite") {
-  throw new TypeError(`App only supports postgres or sqlite db dialect`);
-}
-
-//
-// defaults to sqlite in memory if no other specific params are provided
-export const dbConfig = {
-  username: process.env.DB_USER as string,
-  password: process.env.DB_PASSWORD as string,
-  database: process.env.DB_NAME as string,
-  host: (process.env.DB_HOST || "localhost") as string,
-  port: Number(process.env.DB_PORT || "5432"),
-  dialect: dialect as "postgres" | "sqlite",
-  storage: process.env.DB_STORAGE as string,
-  logging: false
+const configs = {
+  uri: `mongodb://${host}:${port}/${name}`,
+  opts: {
+    useCreateIndex: true,
+    useNewUrlParser: true,
+    useFindAndModify: false,
+    useUnifiedTopology: true
+  }
 };
 
-export const db = new Sequelize(dbConfig);
-
-db.define("notes", {
-  uuid: {
-    primaryKey: true,
-    unique: true,
-    allowNull: false,
-    type: UUID,
-    defaultValue: uuid()
-  },
-  note: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  done: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-    defaultValue: false
-  },
-  archived: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-    defaultValue: false
+export const db = mongoose.connect(configs.uri, configs.opts, (err) => {
+  if (err) {
+    console.log(`error connecting to the database: ${err}`);
+  }
+  else {
+    console.log(`\n⚛ Connected to ${ configs.uri }`);
+    //
+    // quick and dirty db migration
+    return migrate();
   }
 });
 
-export const Notes = db.models.notes;
+export interface NoteI extends Document {
+  uuid: String,
+  name: String,
+  done: Boolean,
+  archived: Boolean
+};
+
+const NoteSchema: Schema = new Schema({
+  uuid: { type: String, required: true, unique: true },
+  note: { type: String, required: true },
+  done: { type: Boolean, default: false },
+  archived: { type: Boolean, default: false }
+});
+
+export const Note = mongoose.model<NoteI>('note', NoteSchema);
+
 //
-// seed a note record
-export const migrate = () => {
+// seed a note
+export const migrate = async () => {
+  const text = "write a todo";
   const seed = {
     uuid: uuid(),
-    note: "write a todo app",
+    note: text,
     done: false,
     archived: false
   };
-  return Notes.findOrCreate({ where: { note: seed.note }, defaults: seed });
+
+  const note = await Note.findOneAndUpdate({ note: text, archived: false }, seed, {
+    new: true,
+    upsert: true
+  }).catch((err: any) => console.log(`error seeding db ${err}`));
 };
