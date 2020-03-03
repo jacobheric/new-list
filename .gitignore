@@ -6,4 +6,5 @@ logs
 .cache
 .parcel-cache
 dist
+data
 .env

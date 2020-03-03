@@ -1,24 +1,19 @@
 version: "3.7"
 services:
   db:
-    image: postgres
-    environment:
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_DB: ${DB_NAME}
+    image: mongo
+    volumes:
+      - ./data:/data/db
     ports:
-      - 5432:5432
+      - "${MONGO_PORT:-27017}:27017"
   app:
     build: .
     environment:
       - PORT
       - HOST
-      - DB_NAME
-      - DB_USER
-      - DB_PASSWORD
-      - DB_HOST
-      - DB_DIALECT
-      - DB_STORAGE
+      - MONGO_HOST
+      - MONGO_DB
+      - MONGO_PORT
     ports:
       - "${PORT:-3000}:${PORT:-3000}"
       - "9229:9229"
