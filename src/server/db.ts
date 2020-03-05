@@ -52,7 +52,7 @@ export const migrate = async () => {
 };
 
 export const db = mongoose.connect(configs.uri, configs.opts, err => {
-  console.log('FUCK');
+  console.log("FUCK");
   if (err) {
     return Promise.reject(new Error(`can't connect to the database: ${err}`));
   } else {

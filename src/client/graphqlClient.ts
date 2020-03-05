@@ -9,7 +9,7 @@ import {
 import { getMainDefinition } from "@apollo/client/utilities";
 import { WebSocketLink } from "@apollo/link-ws";
 import { onError } from "@apollo/link-error";
-import fetch from 'cross-fetch';
+import fetch from "cross-fetch";
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
@@ -27,7 +27,8 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 const httpLink = () =>
   new HttpLink({
-    uri: `http://${HOST}:${PORT}/graphql`, fetch
+    uri: `http://${HOST}:${PORT}/graphql`,
+    fetch
   });
 
 const wsLink = () =>
