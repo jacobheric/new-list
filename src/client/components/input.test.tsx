@@ -4,6 +4,10 @@ import InputComponent from "./input";
 import { v4 as uuid } from "uuid";
 import { MockedProvider } from "@apollo/client/testing";
 
+/**
+ * @jest-environment jsdom
+ */
+
 const testNote = {
   uuid: uuid(),
   note: "create an enzyme test",

@@ -99,7 +99,7 @@ const ListComponent = () => {
           }
           width={100}
         />
-        <ActionButton onClick={() => setSearch(search)}>Search</ActionButton>        
+        <ActionButton onClick={() => setSearch(search)}>Search</ActionButton>
       </Row>
       <HR />
       <InputComponent note={input ? input : undefined} />
@@ -109,10 +109,14 @@ const ListComponent = () => {
             item.archived ? null : (
               <NoteLI key={i} onClick={() => edit(item)}>
                 <NoteText done={item.done}> {item.note} </NoteText>
-                <NoteAction onClick={e => update(e, { ...item, ...{ archived: true } })}>
+                <NoteAction
+                  onClick={e => update(e, { ...item, ...{ archived: true } })}>
                   ⓧ
                 </NoteAction>
-                <NoteAction onClick={e => update(e, { ...item, ...{ done: !item.done } })}>
+                <NoteAction
+                  onClick={e =>
+                    update(e, { ...item, ...{ done: !item.done } })
+                  }>
                   ✓
                 </NoteAction>
               </NoteLI>

@@ -1,6 +1,6 @@
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
-import { db, migrate } from "./db";
+import { db } from "./db";
 import { resolvers, typeDefs } from "./graphql";
 import ParcelBundler from "parcel-bundler";
 import { feature, HOST, PORT } from "../config";
@@ -24,17 +24,23 @@ if (feature.realTime) {
 // use parcel bundler in dev for hot module reloading
 if (process.env.NODE_ENV === "dev") {
   const bundler = new ParcelBundler("src/client/index.html");
-  console.log("running in dev mode with hot module replacement");
+  console.log("Starting in dev mode with hot module replacement...");
   app.use(bundler.middleware());
 } else {
   app.use(express.static(path.join(__dirname, "/client")));
 }
 
-db.then(async () => {
+db.then(() => {
   httpServer.listen(PORT, () => {
     console.log(`⚛ Server running at http://${HOST}:${PORT}`);
     console.log(
       `⚛ GraphQL running at http://${HOST}:${PORT}${server.graphqlPath}\n`
     );
   });
+}).catch(err => {
+  console.log(err);
+  console.log(
+    "App can't run without a db, perhaps try: `docker compose up db`"
+  );
+  process.exitCode = 1;
 });

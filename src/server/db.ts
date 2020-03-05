@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema, Document } from "mongoose";
 import { v4 as uuid } from "uuid";
 
 dotenv.config();
@@ -18,24 +18,12 @@ const configs = {
   }
 };
 
-export const db = mongoose.connect(configs.uri, configs.opts, (err) => {
-  if (err) {
-    console.log(`error connecting to the database: ${err}`);
-  }
-  else {
-    console.log(`\n⚛ Connected to ${ configs.uri }`);
-    //
-    // quick and dirty db migration
-    return migrate();
-  }
-});
-
 export interface NoteI extends Document {
-  uuid: String,
-  name: String,
-  done: Boolean,
-  archived: Boolean
-};
+  uuid: string;
+  name: string;
+  done: boolean;
+  archived: boolean;
+}
 
 const NoteSchema: Schema = new Schema({
   uuid: { type: String, required: true, unique: true },
@@ -44,7 +32,7 @@ const NoteSchema: Schema = new Schema({
   archived: { type: Boolean, default: false }
 });
 
-export const Note = mongoose.model<NoteI>('note', NoteSchema);
+export const Note = mongoose.model<NoteI>("note", NoteSchema);
 
 //
 // seed a note
@@ -57,8 +45,20 @@ export const migrate = async () => {
     archived: false
   };
 
-  const note = await Note.findOneAndUpdate({ note: text, archived: false }, seed, {
+  return Note.findOneAndUpdate({ note: text, archived: false }, seed, {
     new: true,
     upsert: true
-  }).catch((err: any) => console.log(`error seeding db ${err}`));
+  });
 };
+
+export const db = mongoose.connect(configs.uri, configs.opts, err => {
+  console.log('FUCK');
+  if (err) {
+    return Promise.reject(new Error(`can't connect to the database: ${err}`));
+  } else {
+    console.log(`\n⚛ Connected to ${configs.uri}`);
+    //
+    // quick and dirty db migration
+    return migrate();
+  }
+});

@@ -5,10 +5,17 @@
   "scripts": {
     "build:client": "parcel build ./src/client/index.html --target browser --out-dir=./dist/client",
     "build:server": "parcel build ./src/server/index.ts --target node",
-    "build": "concurrently -n server,client \"npm run build:server\" \"npm run build:client\"",
+    "build": "run-p -l build:server build:client",
     "lint": "eslint \"*/**/*.{ts,tsx}\" --fix",
-    "start": "NODE_ENV=dev concurrently -n tsc,tsnd \"tsc --pretty --noEmit --watch\" \"tsnd --transpile-only --respawn ./src/server/index.ts\"",
-    "test": "jest"
+    "start": "cross-env NODE_ENV=dev run-p -rl tsc tsnd",
+    "tsnd": "tsnd --transpile-only ./src/server/index.ts",
+    "tsc": "tsc --pretty --noEmit --watch",
+    "test": "jest --forceExit --detectOpenHandles"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "run-p -l lint test"
+    }
   },
   "dependencies": {
     "@apollo/client": "^3.0.0-beta.37",
@@ -16,7 +23,7 @@
     "@apollo/link-ws": "^2.0.0-beta.3",
     "apollo-server-express": "^2.10.1",
     "components": "^0.1.0",
-    "concurrently": "^5.1.0",
+    "cross-fetch": "^3.0.4",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "graphql": "^14.6.0",
@@ -46,6 +53,7 @@
     "@types/uuid": "^3.4.7",
     "@typescript-eslint/eslint-plugin": "^2.20.0",
     "@typescript-eslint/parser": "^2.20.0",
+    "cross-env": "^7.0.1",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "enzyme-to-json": "^3.4.4",
@@ -53,7 +61,9 @@
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-react": "^7.18.3",
+    "husky": "^4.2.3",
     "jest": "^25.1.0",
+    "npm-run-all": "^4.1.5",
     "prettier": "^1.19.1",
     "ts-jest": "^25.2.0",
     "ts-node": "^8.6.2",

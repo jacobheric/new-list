@@ -1,5 +1,5 @@
 import { gql, PubSub } from "apollo-server-express";
-import { Note, NoteI } from "./db";
+import { Note } from "./db";
 
 export const typeDefs = gql`
   type Note {
@@ -38,10 +38,14 @@ export const resolvers = {
   },
   Mutation: {
     addNote: async (root: any, args: any) => {
-      const note = await Note.findOneAndUpdate({ uuid: args.note.uuid }, args.note, {
-        new: true,
-        upsert: true
-      });
+      const note = await Note.findOneAndUpdate(
+        { uuid: args.note.uuid },
+        args.note,
+        {
+          new: true,
+          upsert: true
+        }
+      );
       pubSub.publish(NOTE_CHANGED, { noteChanged: note });
       return note;
     }
