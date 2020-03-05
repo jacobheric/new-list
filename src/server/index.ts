@@ -30,9 +30,12 @@ if (process.env.NODE_ENV === "dev") {
   app.use(express.static(path.join(__dirname, "/client")));
 }
 
-db.then(async () => {
+db.sync().then(async () => {
+  //
+  // quick and dirty db migration
+  migrate();
   httpServer.listen(PORT, () => {
-    console.log(`⚛ Server running at http://${HOST}:${PORT}`);
+    console.log(`\n⚛ Server running at http://${HOST}:${PORT}`);
     console.log(
       `⚛ GraphQL running at http://${HOST}:${PORT}${server.graphqlPath}\n`
     );

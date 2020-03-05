@@ -1,4 +1,4 @@
-A Parcel, Node, Typescript, Apollo/Graphql, React, Styled Components List/Note App
+A Parcel, Node, Typescript, Apollo/Graphql, React, Styled Components, Sequelize List/Note App
 -----------
 
 A work in progress note/todo app to explore some 
@@ -15,14 +15,16 @@ interesting tech, including:
 * `node` 
 * `yarn` or `npm install`
 
-### bring up a mongodb, if you don't already have one (requires docker)
-* `docker-compose up db`
-
 
 ### running in dev mode
 * `yarn` or `npm install`
 * `yarn start` or `npm start` 
 * `yarn test` or `npm test`
+
+
+By default the app runs against an in memory sqlite db. It runs on port 3000 and supports 
+hot module replacement in dev mode. If you want to use PostgreSQL instead, you need to 
+supply additional env vars (see below).
 
 
 ### build and run in production mode
@@ -31,20 +33,31 @@ interesting tech, including:
 
 
 ### optional params
-It's possible to a custom mongo port/host/db with the following vars in an .env file or in env vars:
+It's possible to run against an external postgresql or sqlite db by providing the 
+following vars in an .env file or in env vars:
 
 ```
-MONGO_HOST=127.0.0.1
-MONGO_DB=list
-MONGO_PORT=23456
+DB_NAME=somedbname
+DB_USER=somedbuser
+DB_PASSWORD=somedbpassword
+DB_HOST=localhost
+DB_DIALECT=postgres
+#
+#  defaults to in ':memory:' for sqlite but can be something like:
+# 'path/to/database.sqlite'
+DB_STORAGE=
 ```
-
-Leaving these unspecified will result in reasonable defaults: `mongodb://localhost:27017/list` 
 
 ### docker (these require docker, obviously)
-* `docker-compose up db` will bring up mongo db in a container. 
+If you want to run against PostgreSQL, there is a dockerized version of it. Make sure you've set 
+the DB_* env vars outlined above to postgres value, then:
+* `docker-compose up db` will bring up a postgres db in a container. 
+
+To build and bring up just the node app in docker, run:
 * `docker-componse up app` will bring the app up in a container.
-* `docker-compose up` will bring both the db and the app up in docker.    
+
+To bring up both:
+* `docker-compose up` will bring the postgres db and the app up in docker.    
 
 
 ### more env vars
@@ -71,8 +84,6 @@ via [CSS prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/
 * markdown support
 * js-free support
 
-### other data stores
-* see branch `rdbms` for a rudimentary example of this app using sequelize and postgresql/sqlite
 
 
 
