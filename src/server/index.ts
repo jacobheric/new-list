@@ -24,6 +24,7 @@ if (feature.realTime) {
 // use parcel bundler in dev for hot module reloading
 if (process.env.NODE_ENV === "dev") {
   const bundler = new ParcelBundler("src/client/index.html");
+  // eslint-disable-next-line no-console
   console.log("Starting in dev mode with hot module replacement...");
   app.use(bundler.middleware());
 } else {
@@ -32,14 +33,16 @@ if (process.env.NODE_ENV === "dev") {
 
 db.then(() => {
   httpServer.listen(PORT, () => {
+    // eslint-disable-next-line no-console
     console.log(`⚛ Server running at http://${HOST}:${PORT}`);
+    // eslint-disable-next-line no-console
     console.log(
       `⚛ GraphQL running at http://${HOST}:${PORT}${server.graphqlPath}\n`
     );
   });
 }).catch(err => {
-  console.log(err);
-  console.log(
+  console.error(err);
+  console.error(
     "App can't run without a db, perhaps try: `docker compose up db`"
   );
   process.exitCode = 1;

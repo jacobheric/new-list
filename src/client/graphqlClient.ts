@@ -14,14 +14,14 @@ import fetch from "cross-fetch";
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
     graphQLErrors.map(({ message, locations, path }) =>
-      console.log(
+      console.error(
         `GraphQL Error: Message: ${message}, Location: ${locations}, Path: ${path}`
       )
     );
   }
 
   if (networkError) {
-    console.log(`GraphQL Network Error]: ${networkError}`);
+    console.error(`GraphQL Network Error]: ${networkError}`);
   }
 });
 

@@ -52,10 +52,10 @@ export const migrate = async () => {
 };
 
 export const db = mongoose.connect(configs.uri, configs.opts, err => {
-  console.log("FUCK");
   if (err) {
     return Promise.reject(new Error(`can't connect to the database: ${err}`));
   } else {
+    // eslint-disable-next-line no-console
     console.log(`\n⚛ Connected to ${configs.uri}`);
     //
     // quick and dirty db migration

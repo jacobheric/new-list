@@ -8,6 +8,7 @@ import { Row } from "./components/styles";
 import { ErrorActionContext } from "./components/error";
 
 export const echo = (msg: string, val: any) => {
+  // eslint-disable-next-line no-console
   console.log(msg, val);
   return val;
 };
