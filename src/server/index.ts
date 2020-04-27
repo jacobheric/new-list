@@ -1,6 +1,6 @@
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
-import { db } from "./db";
+import { migrate } from "./db";
 import { resolvers, typeDefs } from "./graphql";
 import ParcelBundler from "parcel-bundler";
 import { feature, HOST, PORT } from "../config";
@@ -31,19 +31,15 @@ if (process.env.NODE_ENV === "dev") {
   app.use(express.static(path.join(__dirname, "/client")));
 }
 
-db.then(() => {
-  httpServer.listen(PORT, () => {
-    // eslint-disable-next-line no-console
-    console.log(`⚛ Server running at http://${HOST}:${PORT}`);
-    // eslint-disable-next-line no-console
-    console.log(
-      `⚛ GraphQL running at http://${HOST}:${PORT}${server.graphqlPath}\n`
-    );
-  });
-}).catch(err => {
-  console.error(err);
-  console.error(
-    "App can't run without a db, perhaps try: `docker compose up db`"
+//
+// quick and dirty migration
+migrate();
+
+httpServer.listen(PORT, () => {
+  // eslint-disable-next-line no-console
+  console.log(`⚛ Server running at http://${HOST}:${PORT}`);
+  // eslint-disable-next-line no-console
+  console.log(
+    `⚛ GraphQL running at http://${HOST}:${PORT}${server.graphqlPath}\n`
   );
-  process.exitCode = 1;
 });

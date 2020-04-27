@@ -1,5 +1,5 @@
 import { gql, PubSub } from "apollo-server-express";
-import { Note } from "./db";
+import { prisma } from "./db";
 
 export const typeDefs = gql`
   type Note {
@@ -34,18 +34,15 @@ const NOTE_CHANGED = "NOTE_CHANGED";
 
 export const resolvers = {
   Query: {
-    notes: async (): Promise<any> => await Note.find({})
+    notes: async (): Promise<any> => await prisma.note.findMany()
   },
   Mutation: {
     addNote: async (root: any, args: any) => {
-      const note = await Note.findOneAndUpdate(
-        { uuid: args.note.uuid },
-        args.note,
-        {
-          new: true,
-          upsert: true
-        }
-      );
+      const note = await prisma.note.upsert({
+        where: { uuid: args.note.uuid },
+        update: args.note,
+        create: args.note
+      });
       pubSub.publish(NOTE_CHANGED, { noteChanged: note });
       return note;
     }

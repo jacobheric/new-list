@@ -7,4 +7,5 @@ logs
 .parcel-cache
 dist
 data
-.env
+*.env*
+prisma/migrations

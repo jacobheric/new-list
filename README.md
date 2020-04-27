@@ -1,22 +1,37 @@
-A Parcel, Node, Typescript, Apollo/Graphql, React, Styled Components List/Note App
+A New List Application
 -----------
 
-A work in progress note/todo app to explore some 
-interesting tech, including:
+A self hosted note/todo app built using Parcel, Node, Typescript, Apollo/Graphql, 
+React, Styled Components and Prisma 2.
 
-* [Parcel](https://parceljs.org/)
-* [Styled Components](https://styled-components.com/)
-* [Apollo Graphql](https://www.apollographql.com/)
-* [React Hooks](https://reactjs.org/docs/hooks-reference.html)
-* [Typescript](https://www.typescriptlang.org/)
-
+![New List light mode](light-screenshot.png)
 
 ### pre-requisites
 * `node` 
+* `yarn` or `npm`
+
+### install dependencies
 * `yarn` or `npm install`
 
-### bring up a mongodb, if you don't already have one (requires docker)
+### setup database
+If you do not have a postgres db already, simply set these env vars in `.env`
+```
+DB_NAME=somedb
+DB_USER=someuser
+DB_PASSWORD=somepassword
+``` 
+and then run:
 * `docker-compose up db`
+
+Then set the connection url for the Prisma db toolkint in: `prisma/.env` like so:
+`DATABASE_URL="postgresql://[someuser]:[somepassword]@[somehost]:[someport]/[someport]?schema=public"`
+
+### bootstrapping Prisma
+* `npx prisma generate` 
+* `npx prisma migrate save --experimental`
+* `npx prisma migrate up --experimental`
+
+This installs the Prisma smart node module, generates the db migrations and runs them against your db.  
 
 
 ### running in dev mode
@@ -26,25 +41,13 @@ interesting tech, including:
 
 
 ### build and run in production mode
-* `yarn build` or `npm build`
+* `yarn build` or `npm run build`
 * `node dist/index.js`
 
-
-### optional params
-It's possible to a custom mongo port/host/db with the following vars in an .env file or in env vars:
-
-```
-MONGO_HOST=127.0.0.1
-MONGO_DB=list
-MONGO_PORT=23456
-```
-
-Leaving these unspecified will result in reasonable defaults: `mongodb://localhost:27017/list` 
-
 ### docker (these require docker, obviously)
-* `docker-compose up db` will bring up mongo db in a container. 
-* `docker-componse up app` will bring the app up in a container.
-* `docker-compose up` will bring both the db and the app up in docker.    
+* `docker-compose up db` brings up a postgres db in a container (requires .env configs, see above). 
+* `docker-componse up app` brings the app up in a container.
+* `docker-compose up` brings both the db and the app up in docker.    
 
 
 ### more env vars
@@ -60,6 +63,7 @@ HOST=0.0.0.0
 ### dark mode!
 The app supports an optional dark mode 
 via [CSS prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme)
+![New List dark mode](dark-screenshot.png)
 
 ### roadmap/coming soon:
 * ~~support for other db providers~~
@@ -67,12 +71,10 @@ via [CSS prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/
 * ~~run in docker~~ 
 * ~~socket-based push updates~~
 * ~~note search~~
+* multiple note support
 * authentication
 * markdown support
 * js-free support
-
-### other data stores
-* see branch `rdbms` for a rudimentary example of this app using sequelize and postgresql/sqlite
 
 
 
