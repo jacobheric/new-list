@@ -102,7 +102,7 @@ const ListComponent = () => {
         <ActionButton onClick={() => setSearch(search)}>Search</ActionButton>
       </Row>
       <HR />
-      <InputComponent note={input ? input : undefined} />
+      <InputComponent note={input} />
       <NoteList>
         {data &&
           filter().map((item: Note, i: number) =>
