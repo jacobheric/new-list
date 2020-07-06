@@ -1,25 +1,19 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import lightTheme from "./theme";
-import GlobalStyle from "./theme";
-import { ThemeProvider } from "styled-components";
 import ListComponent from "./components/list";
 import { gqlClient } from "./graphqlClient";
 import { ApolloProvider } from "@apollo/client";
 import { Error, ErrorProvider } from "./components/error";
-import { Container } from "./components/styles";
+import "./style.css";
 
 ReactDOM.render(
-  <ThemeProvider theme={lightTheme}>
-    <GlobalStyle />
-    <ErrorProvider>
-      <ApolloProvider client={gqlClient}>
+  <ErrorProvider>
+    <ApolloProvider client={gqlClient}>
+      <div className="w-10/12 lg:max-w-screen-lg mt-8 mx-auto">
         <Error />
-        <Container>
-          <ListComponent />
-        </Container>
-      </ApolloProvider>
-    </ErrorProvider>
-  </ThemeProvider>,
+        <ListComponent />
+      </div>
+    </ApolloProvider>
+  </ErrorProvider>,
   document.getElementById("root")
 );

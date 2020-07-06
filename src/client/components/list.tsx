@@ -1,16 +1,6 @@
 import * as React from "react";
 import { ChangeEvent, SyntheticEvent, useContext, useState } from "react";
 import * as r from "ramda";
-import {
-  ActionButton,
-  HR,
-  Input,
-  NoteAction,
-  NoteLI,
-  NoteList,
-  NoteText,
-  Row
-} from "./styles";
 import InputComponent, {
   ADD_NOTE,
   cacheUpdate,
@@ -23,6 +13,7 @@ import { feature } from "../../config";
 import { DataContainer } from "../util";
 import { ErrorActionContext } from "./error";
 import { useEffect } from "react";
+import classNames from "classnames";
 
 export const GET_NOTES = gql`
   query getNotes {
@@ -90,39 +81,51 @@ const ListComponent = () => {
 
   return (
     <DataContainer error={error ? error.message : undefined} loading={loading}>
-      <Row>
-        <Input
+      <div className="row">
+        <input
+          className="w-full"
           placeholder={"search"}
           value={search}
           onChange={(event: ChangeEvent<HTMLInputElement>) =>
             setSearch(event.target.value)
           }
-          width={100}
         />
-        <ActionButton onClick={() => setSearch(search)}>Search</ActionButton>
-      </Row>
-      <HR />
+        <button onClick={() => setSearch(search)}>Search</button>
+      </div>
+      <hr />
       <InputComponent note={input} />
-      <NoteList>
+      <ul>
         {data &&
           filter().map((item: Note, i: number) =>
-            item.archived ? null : (
-              <NoteLI key={i} onClick={() => edit(item)}>
-                <NoteText done={item.done}> {item.note} </NoteText>
-                <NoteAction
-                  onClick={e => update(e, { ...item, ...{ archived: true } })}>
-                  ⓧ
-                </NoteAction>
-                <NoteAction
-                  onClick={e =>
-                    update(e, { ...item, ...{ done: !item.done } })
-                  }>
-                  ✓
-                </NoteAction>
-              </NoteLI>
-            )
+            item.archived
+              ? null
+              : [
+                  <li className="row px-1" key={i} onClick={() => edit(item)}>
+                    <div
+                      className={classNames("w-full", "cursor-pointer", {
+                        strike: item.done
+                      })}>
+                      {item.note}
+                    </div>
+                    <div
+                      className="cursor-pointer px-2 text-xl"
+                      onClick={e =>
+                        update(e, { ...item, ...{ archived: true } })
+                      }>
+                      ⓧ
+                    </div>
+                    <div
+                      className="cursor-pointer px-2 text-xl"
+                      onClick={e =>
+                        update(e, { ...item, ...{ done: !item.done } })
+                      }>
+                      ✓
+                    </div>
+                  </li>,
+                  <hr key={`h${i}`} />
+                ]
           )}
-      </NoteList>
+      </ul>
     </DataContainer>
   );
 };

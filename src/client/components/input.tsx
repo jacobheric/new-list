@@ -9,7 +9,6 @@ import {
   useState
 } from "react";
 import * as r from "ramda";
-import { ActionButton, Input, Row } from "./styles";
 import { GET_NOTES } from "./list";
 import gql from "graphql-tag";
 import { ApolloClient, useMutation, useQuery } from "@apollo/client";
@@ -107,19 +106,18 @@ const InputComponent: FunctionComponent<{ note?: Note }> = ({ note }) => {
   };
 
   return (
-    <div>
-      <Row>
-        <Input
-          placeholder={"add"}
-          value={input.note}
-          onChange={(event: ChangeEvent<HTMLInputElement>) =>
-            setInput({ ...input, ...{ note: event.target.value } })
-          }
-          onKeyPress={keyPress}
-          width={100}
-        />
-        <ActionButton onClick={() => add()}>Add</ActionButton>
-      </Row>
+    <div className="row">
+      <input
+        className="w-full"
+        placeholder={"add"}
+        value={input.note}
+        onChange={(event: ChangeEvent<HTMLInputElement>) =>
+          setInput({ ...input, ...{ note: event.target.value } })
+        }
+        onKeyPress={keyPress}
+        width={100}
+      />
+      <button onClick={() => add()}>Add</button>
     </div>
   );
 };

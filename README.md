@@ -2,7 +2,7 @@ A New List Application
 -----------
 
 A self hosted note/todo app built using Parcel, Node, Typescript, Apollo/Graphql, 
-React, Styled Components and Prisma 2.
+React, Tailwind CSS and Prisma 2.
 
 ![New List light mode](light-screenshot.png)
 
