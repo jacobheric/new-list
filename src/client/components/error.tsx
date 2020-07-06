@@ -1,6 +1,5 @@
 import React, { FunctionComponent, useContext, useState } from "react";
 import { v4 as uuid } from "uuid";
-import { ActionButton, Errors } from "./styles";
 import * as r from "ramda";
 
 export interface ErrorContext {
@@ -28,12 +27,12 @@ export const Error: FunctionComponent = () => {
   return r.isEmpty(errors) ? null : (
     <>
       {errors.map((error: ErrorContext, i) => (
-        <Errors className="error" key={i}>
+        <div
+          className="error row border-solid border-2 rounded-md border-pink-300 p-5"
+          key={i}>
           Error: {error.error}
-          <ActionButton onClick={() => removeError(error.id)}>
-            Dismiss
-          </ActionButton>
-        </Errors>
+          <button onClick={() => removeError(error.id)}>Dismiss</button>
+        </div>
       ))}
     </>
   );

@@ -4,7 +4,6 @@ import {
   useContext,
   useEffect
 } from "react";
-import { Row } from "./components/styles";
 import { ErrorActionContext } from "./components/error";
 
 export const echo = (msg: string, val: any) => {
@@ -18,7 +17,7 @@ export const DataContainer: FunctionComponent<{
   error?: string;
 }> = ({ loading, error, children }) => {
   if (loading) {
-    return <Row>Loading...</Row>;
+    return <div className="row">Loading...</div>;
   }
 
   if (error) {
