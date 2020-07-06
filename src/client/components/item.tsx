@@ -3,7 +3,7 @@ import {
   FunctionComponent,
   SyntheticEvent,
   useContext,
-  useEffect,
+  useEffect
 } from "react";
 import { ADD_NOTE, cacheUpdate, Note } from "./input";
 import classNames from "classnames";
